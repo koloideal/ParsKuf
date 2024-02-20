@@ -5,26 +5,6 @@ import datetime
 import time
 
 
-def time_is(func):
-
-    def wrap(j, k, c):
-
-        start = time.time()
-
-        value = func(j, k, c)
-
-        end = time.time()
-
-        result = end - start
-
-        print(f'Функция выполнилась за {round(result, 4)} с.')
-
-        return value
-
-    return wrap
-
-
-@time_is
 def pars(url, goal, cat):
 
     start_parsing = time.time()
@@ -71,11 +51,11 @@ def pars(url, goal, cat):
 
             try:
 
-                os.makedirs(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}')
+                os.makedirs(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}')
 
             except FileExistsError:
 
-                with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/about.txt', 'r', encoding='utf8') as e:
+                with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/about.txt', 'r', encoding='utf8') as e:
                     line = e.readline()
 
                 if line[18:53] == about_item[k][0][:35]:
@@ -89,21 +69,21 @@ def pars(url, goal, cat):
                         idx += 1
 
                         alt = photo_link[1].replace(" ", "_").replace("/", "") + '(' + str(idx) + ')'
-                        os.makedirs(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}')
+                        os.makedirs(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}')
 
                         photo = requests.get(photo_link[0])
 
-                        with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/{alt}.jpg', 'wb') as out:
+                        with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/{alt}.jpg', 'wb') as out:
                             out.write(photo.content)
 
-                        with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/about.txt', 'w', encoding='utf8') as about:
+                        with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/about.txt', 'w', encoding='utf8') as about:
                             about.write(f'Ссылка на товар : {about_item[k][0]}\n\n')
                             about.write(f'Цена : {about_item[k][1]}\n\n')
                             about.write(f'Локация товара : {about_item[k][2]}\n\n')
 
                     except IndexError:
 
-                        with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/about.txt', 'w', encoding='utf8') as about:
+                        with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/about.txt', 'w', encoding='utf8') as about:
                             about.write(f'Ссылка на товар : {about_item[k][0]}\n\n')
                             about.write('Цена : неизвестно\n')
                             about.write(f'Цена : {about_item[k][1]}\n\n')
@@ -124,19 +104,19 @@ def pars(url, goal, cat):
 
                 photo = requests.get(photo_link[0])
 
-                with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/{alt}.jpg', 'wb') as out:
+                with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/{alt}.jpg', 'wb') as out:
                     out.write(photo.content)
 
                 try:
 
-                    with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/about.txt', 'w', encoding='utf8') as about:
+                    with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/about.txt', 'w', encoding='utf8') as about:
                         about.write(f'Ссылка на товар : {about_item[k][0]}\n\n')
                         about.write(f'Цена : {about_item[k][1]}\n\n')
                         about.write(f'Локация товара : {about_item[k][2]}\n\n')
 
                 except IndexError:
 
-                    with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", " ")}/{alt}/about.txt', 'w', encoding='utf8') as about:
+                    with open(f'content/{cat.replace(" ", "_")}/{goal.replace("+", "_")}/{alt}/about.txt', 'w', encoding='utf8') as about:
                         about.write(f'Ссылка на товар : {about_item[k][0]}\n\n')
                         about.write('Цена : неизвестно\n\n')
                         about.write(f'Локация товара : {about_item[k][1]}\n\n')
@@ -151,6 +131,18 @@ def pars(url, goal, cat):
             logs.write(f'Дата поиска - {datetime.datetime.now()}\n')
             logs.write(f'Категория поиска - {cat}\n')
             logs.write(f'Время поиска - {round(end_parsing - start_parsing, 4 )}\n\n')
+
+        yes_no = input('Желаете продолжить?(Y,N)\n')
+
+        if yes_no == 'Y':
+
+            print(f'Время поиска {round(end_parsing - start_parsing, 4)} с.\n ')
+            helper()
+
+        else:
+
+            print(f'Время поиска {round(end_parsing - start_parsing, 4 )} с.')
+            print('Удачи !\n')
 
     except Exception as e:
 
@@ -169,62 +161,80 @@ def pars(url, goal, cat):
             logs.write(f'Категория поиска - {cat}\n')
             logs.write(f'Время поиска - {round(end_parsing - start_parsing, 4)}\n\n')
 
+        yes_no = input('Желаете продолжить?(Y,N)\n')
 
-all_categories = {
+        if yes_no == 'Y':
 
-    1: '1 - Мобильные телефоны',
-    2: '2 - Зарядные устройства для смартфонов',
-    3: '3 - Чехлы для смартфонов',
-    4: '4 - Портативные зарядные устройства',
-    5: '5 - Планшеты',
-    6: '6 - Умные часы и фитнес-браслеты',
-    7: '7 - Наушники',
-    8: '8 - Ноутбуки',
-    9: '9 - Компьютеры',
-    10: '10 - Мониторы',
-    11: '11 - Комплектующие для ПК',
-    12: '12 - Периферия и аксессуары'
+            print(f'Время поиска {round(end_parsing - start_parsing, 4)} с.\n ')
+            helper()
 
-}
+        else:
 
-link_categories = {
+            print(f'Время поиска {round(end_parsing - start_parsing, 4)} с. ')
+            print('Удачи !\n')
 
-    1: 'mobilnye-telefony',
-    2: 'zaryadnye-ustrojstva',
-    3: 'chehly-kejsy',
-    4: 'power-bank',
-    5: 'planshety',
-    6: 'umnye-chasy-i-fitnes-braslety',
-    7: 'naushniki',
-    8: 'noutbuki',
-    9: 'sistemnye-bloki',
-    10: 'monitory',
-    11: 'komplektuyushchie-dlja-kompjutera',
-    12: 'kompjuternaja-periferiya-i-aksessuary'
 
-}
+def helper():
+    all_categories = {
 
-for i in all_categories.values():
-    print(i)
+        1: '1 - Мобильные телефоны',
+        2: '2 - Зарядные устройства для смартфонов',
+        3: '3 - Чехлы для смартфонов',
+        4: '4 - Портативные зарядные устройства',
+        5: '5 - Планшеты',
+        6: '6 - Умные часы и фитнес-браслеты',
+        7: '7 - Наушники',
+        8: '8 - Ноутбуки',
+        9: '9 - Компьютеры',
+        10: '10 - Мониторы',
+        11: '11 - Комплектующие для ПК',
+        12: '12 - Периферия и аксессуары'
 
-while True:
+    }
 
-    try:
+    link_categories = {
 
-        category = input('\nВведите номер категории интересующего вас товара: ').strip(' .')
+        1: 'mobilnye-telefony',
+        2: 'zaryadnye-ustrojstva',
+        3: 'chehly-kejsy',
+        4: 'power-bank',
+        5: 'planshety',
+        6: 'umnye-chasy-i-fitnes-braslety',
+        7: 'naushniki',
+        8: 'noutbuki',
+        9: 'sistemnye-bloki',
+        10: 'monitory',
+        11: 'komplektuyushchie-dlja-kompjutera',
+        12: 'kompjuternaja-periferiya-i-aksessuary'
 
-        clear_cat = all_categories.get(int(category))[4:].strip()
+    }
 
-        break
+    for i in all_categories.values():
+        print(i)
 
-    except (TypeError, ValueError):
+    while True:
 
-        print('Неправильно введённый номер, повторите ')
+        try:
 
-print(f'\nОбъявления будут искаться в категории "{clear_cat}"')
+            category = input('\nВведите номер категории интересующего вас товара: ').strip(' .')
 
-target = input('\nВведите название интересующего вас устройства: \n').replace(' ', '+')
-print('В процессе...')
+            clear_cat = all_categories.get(int(category))[4:].strip()
 
-pars(f'https://www.kufar.by/l/{link_categories.get(int(category))}/bez-posrednikov?query={target}&sort=lst.d', target, clear_cat)
+            break
+
+        except (TypeError, ValueError):
+
+            print('Неправильно введённый номер, повторите ')
+
+    print(f'\nОбъявления будут искаться в категории "{clear_cat}"')
+
+    target = input('\nВведите название интересующего вас устройства: \n').replace(' ', '+')
+    print('В процессе...')
+
+    pars(f'https://www.kufar.by/l/{link_categories.get(int(category))}/bez-posrednikov?query={target}&sort=lst.d', target, clear_cat)
+
+
+if __name__ == '__main__':
+
+    helper()
 
