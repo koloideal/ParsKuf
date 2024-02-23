@@ -1,4 +1,5 @@
 /content
 .idea
-errors.txt
-stats.txt
+utils/errors.txt
+utils/stats.txt
+__pycache__
