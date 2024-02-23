@@ -1,4 +1,4 @@
-from func import pars, to_database
+from func import pars
 
 
 def helper():
@@ -56,6 +56,5 @@ def helper():
     print(f'\nОбъявления будут искаться в категории "{clear_cat}"')
 
     target = input('\nВведите название интересующего вас устройства: \n').replace(' ', '+')
-    print('В процессе...')
 
     pars.pars(f'https://www.kufar.by/l/{link_categories.get(int(category))}/bez-posrednikov?query={target}&sort=lst.d', target, clear_cat)

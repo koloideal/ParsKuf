@@ -3,47 +3,85 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import datetime
-from func import helper, to_database
+from func import helper, to_database, to_html
 
 
 def pars(url, goal, cat):
 
-    start_parsing = time.time()
-    request = requests.get(url)
-    soup = BeautifulSoup(request.text, 'html.parser')
-
-    all_item = soup.find_all("div", class_="styles_cards__bBppJ")
-
-    about_item = []
-
-    for i in all_item[0].contents:
-
-        try:
-
-            item = [i.a['href'], i.find('h3', class_="styles_title__F3uIe").text, i.find('p', class_='styles_price__G3lbO').text,
-                    i.find('div', class_='styles_secondary__MzdEb').text, i.img['src']]
-
-            about_item.append(item)
-
-        except TypeError:
-
-            item = [i.a['href'], i.find('h3', class_="styles_title__F3uIe").text, i.find('p', class_='styles_price__G3lbO').text,
-                    i.find('div', class_='styles_secondary__MzdEb').text, False]
-
-            about_item.append(item)
-
-    cat = cat.replace(" ", "_")
-    goal = goal.replace("+", "_")
-
-    os.makedirs('content', exist_ok=True)
-
-    os.makedirs(f'content/{cat}', exist_ok=True)
-
-    os.makedirs(f'content/{cat}/{goal}', exist_ok=True)
-
-    to_database.to_database(cat, goal, about_item)
-
     try:
+
+        while True:
+
+            try:
+
+                need_to_db = int(input('\nСоздавать базу данных?(1 - Да, 0 - Нет)\n'))
+
+                if need_to_db in [0, 1]:
+
+                    break
+
+            except ValueError:
+
+                print('Введено некорректное значение')
+
+        while True:
+
+            try:
+
+                need_to_html = int(input('\nСоздавать HTML страницу?(1 - Да, 0 - Нет)\n'))
+
+                if need_to_html in [0, 1]:
+
+                    break
+
+            except ValueError:
+
+                print('Введено некорректное значение')
+
+        print('\nВ процессе...\n')
+
+        start_parsing = time.time()
+        request = requests.get(url)
+        soup = BeautifulSoup(request.text, 'html.parser')
+
+        all_item = soup.find_all("div", class_="styles_cards__bBppJ")
+
+        about_item = []
+
+        for i in all_item[0].contents:
+
+            try:
+
+                item = [i.a['href'], i.find('h3', class_="styles_title__F3uIe").text, i.find('p', class_='styles_price__G3lbO').text,
+                        i.find('div', class_='styles_secondary__MzdEb').text, i.img['src']]
+
+                about_item.append(item)
+
+            except TypeError:
+
+                item = [i.a['href'], i.find('h3', class_="styles_title__F3uIe").text, i.find('p', class_='styles_price__G3lbO').text,
+                        i.find('div', class_='styles_secondary__MzdEb').text, False]
+
+                about_item.append(item)
+
+        cat = cat.replace(" ", "_")
+        goal = goal.replace("+", "_")
+
+        os.makedirs('content', exist_ok=True)
+
+        os.makedirs(f'content/{cat}', exist_ok=True)
+
+        os.makedirs(f'content/{cat}/{goal}', exist_ok=True)
+
+        if need_to_db:
+
+            to_database.to_database(cat, goal, about_item)
+
+        if need_to_html:
+
+            to_html.to_html(about_item, cat, goal)
+
+        print('Загружается контент...')
 
         for item in about_item:
 
@@ -94,7 +132,10 @@ def pars(url, goal, cat):
 
         else:
 
-            print('\nУдачи !\n')
+            pass
+    except IndexError:
+
+        print('\nПо данному запросу ничего не найдено')
 
     except Exception as e:
 
@@ -117,12 +158,12 @@ def pars(url, goal, cat):
         print(f'Найдено объявлений - {len(about_item)}')
         print(f'Результаты парсинга сохранены в content/{cat}/{goal}/\n')
 
-        yes_no = input('Желаете продолжить?(Y,N)\n')
+        yes_no = input('Желаете продолжить?(Y,N)\n').lower()
 
-        if yes_no == 'Y':
+        if yes_no == 'y' or yes_no == 'yes':
 
             helper.helper()
 
         else:
 
-            print('\nУдачи !\n')
+            pass

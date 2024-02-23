@@ -56,3 +56,5 @@ def to_database(f_name, s_name, contents):
 
     connection.commit()
     cursor.close()
+
+    print('База данных успешно создана\n')
