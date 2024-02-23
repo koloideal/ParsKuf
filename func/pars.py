@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import datetime
-from func import helper
+from func import helper, to_database
 
 
 def pars(url, goal, cat):
@@ -32,15 +32,18 @@ def pars(url, goal, cat):
 
             about_item.append(item)
 
+    cat = cat.replace(" ", "_")
+    goal = goal.replace("+", "_")
+
+    os.makedirs('content', exist_ok=True)
+
+    os.makedirs(f'content/{cat}', exist_ok=True)
+
+    os.makedirs(f'content/{cat}/{goal}', exist_ok=True)
+
+    to_database.to_database(cat, goal, about_item)
+
     try:
-        cat = cat.replace(" ", "_").replace("/", "_").replace(":", "").replace("*", "_")
-        goal = goal.replace("+", "_")
-
-        os.makedirs('content', exist_ok=True)
-
-        os.makedirs(f'content/{cat}', exist_ok=True)
-
-        os.makedirs(f'content/{cat}/{goal}', exist_ok=True)
 
         for item in about_item:
 

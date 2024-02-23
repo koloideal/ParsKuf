@@ -1,4 +1,4 @@
-from func import pars
+from func import pars, to_database
 
 
 def helper():
