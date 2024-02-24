@@ -38,7 +38,7 @@ def to_html(contents, f_name, s_name, n_r_h):
                 color: #a82828;
                 background-color: #E39A36;
             }
-            div{
+            .text{
                 background-color: #e3a982;
                 border-bottom-left-radius: 20px;
                 border-bottom-right-radius: 20px;
@@ -48,6 +48,13 @@ def to_html(contents, f_name, s_name, n_r_h):
                 flex-direction: column;
                 width: 350px;
                 margin-bottom: 50px;
+                margin-left: 33%;
+                margin-right: auto;
+            }
+            .image{
+                width: 40%;
+                margin-left: 33%;
+                margin-right: auto;
             }
             
         </style>
@@ -60,16 +67,20 @@ def to_html(contents, f_name, s_name, n_r_h):
             <body>
                 {%- for x in sort_contents %}
                 {% if x[4] != False %}
-                    <img src={{x[4]}}>
-                    <div>
+                    <div class="image">
+                        <img src={{x[4]}}>
+                    </div>
+                    <div class="text">
                         <a href={{x[0]}}>Ссылка на товар</a>
                         <p>{{x[1]}}</p>
                         <p>{{x[2]}}</p>
                         <p>{{x[3]}}</p>
                     </div>
                 {% else %}
-                    <img src='https://turbok.by/public/img/no-photo--lg.png' width='370' height='280'>
-                    <div>
+                    <div class="image">
+                        <img src='https://turbok.by/public/img/no-photo--lg.png' width='370' height='280'>
+                    </div>
+                    <div class="text">
                         <a href={{x[0]}}>Ссылка на товар</a>
                         <p>{{x[1]}}</p>
                         <p>{{x[2]}}</p>
