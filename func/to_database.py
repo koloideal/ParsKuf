@@ -3,7 +3,7 @@ import sqlite3
 
 def to_database(f_name, s_name, contents):
 
-    goal = s_name.replace(" ", "_").replace("/", "_").replace(":", "").replace("*", "_")
+    goal = s_name.replace(" ", "_").replace("/", "_").replace(":", "").replace("*", "_").replace("?", "_")
     cat = f_name.replace(" ", "_")
 
     connection = sqlite3.connect(f'content/{cat}/{goal}/{goal}.db')

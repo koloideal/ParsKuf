@@ -1,12 +1,14 @@
 from jinja2 import Template
 
 
-def to_html(contents, f_name, s_name):
+def to_html(contents, f_name, s_name, n_r_h):
 
-    goal = s_name.replace(" ", "_").replace("/", "_").replace(":", "").replace("*", "_")
+    goal = s_name.replace(" ", "_").replace("/", "_").replace(":", "").replace("*", "_").replace("?", "_")
     cat = f_name.replace(" ", "_")
 
-    sort_contents = sorted(contents, key=lambda x: float(x[2].replace(' ', '')[:-2]) if x[2] != 'Договорная' else True)
+    not_error = ['Договорная', 'Бесплатно']
+
+    sort_contents = sorted(contents, key=lambda x: float(x[2].replace(' ', '')[:-2]) if x[2] not in not_error else True, reverse=n_r_h)
 
     item = '''
     <!DOCTYPE HTML>

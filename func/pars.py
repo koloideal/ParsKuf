@@ -16,27 +16,35 @@ def pars(url, goal, cat):
 
                 need_to_db = int(input('\nСоздавать базу данных?(1 - Да, 0 - Нет)\n'))
 
-                if need_to_db in [0, 1]:
-
-                    break
-
-            except ValueError:
-
-                print('Введено некорректное значение')
-
-        while True:
-
-            try:
-
                 need_to_html = int(input('\nСоздавать HTML страницу?(1 - Да, 0 - Нет)\n'))
 
-                if need_to_html in [0, 1]:
+                if need_to_html in [0, 1] and need_to_db in [0, 1]:
 
                     break
 
             except ValueError:
 
                 print('Введено некорректное значение')
+
+        if need_to_html:
+
+            while True:
+
+                try:
+
+                    need_to_reverse_html = int(input('\nКак сортировать результаты в HTML?(1 - От большего к меньшему, 0 - От меньшего к большему)\n'))
+
+                    if need_to_reverse_html in [0, 1]:
+
+                        break
+
+                    else:
+
+                        print('Введено неверное значение')
+
+                except ValueError:
+
+                    print('Введено некорректное значение')
 
         print('\nВ процессе...\n')
 
@@ -81,13 +89,13 @@ def pars(url, goal, cat):
 
         if need_to_html:
 
-            to_html.to_html(about_item, cat, goal)
+            to_html.to_html(about_item, cat, goal, need_to_reverse_html)
 
         print('Загружается контент...')
 
         for item in about_item:
 
-            alt = item[1].replace(" ", "_").replace("/", "").replace(":", "").replace("*", "_") + '(' + item[0][30:34] + ')'
+            alt = item[1].replace(" ", "_").replace("/", "").replace(":", "").replace("*", "_").replace("?", "_") + '(' + item[0][30:34] + ')'
 
             try:
 
