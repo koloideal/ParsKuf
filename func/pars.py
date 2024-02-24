@@ -67,6 +67,8 @@ def pars(url, goal, cat):
         cat = cat.replace(" ", "_")
         goal = goal.replace("+", "_")
 
+        os.makedirs('utils', exist_ok=True)
+
         os.makedirs('content', exist_ok=True)
 
         os.makedirs(f'content/{cat}', exist_ok=True)
