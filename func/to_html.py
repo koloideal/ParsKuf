@@ -18,7 +18,7 @@ def to_html(contents, f_name, s_name, n_r_h):
                 font-size:large;
                 font-family: sans-serif;
                 font-weight: bold;
-                background-color: #E35D36;
+                background-color: white;
                 border-radius: 20px;
                 padding: 10px;
                 text-align: center;
@@ -28,18 +28,18 @@ def to_html(contents, f_name, s_name, n_r_h):
                 font-family: Roboto, sans-serif;
                 font-weight: bold;
                 text-decoration: None;
-                background-color: #427777;
+                background-color: white;
                 border-radius: 20px;
                 padding: 10px;
                 text-align: center;
-                color: #E3AF36;
+                color: black;
             }
             a:hover{
-                color: #a82828;
-                background-color: #E39A36;
+                color: white;
+                background-color: black;
             }
             .text{
-                background-color: #e3a982;
+                background-color: black;
                 border-bottom-left-radius: 20px;
                 border-bottom-right-radius: 20px;
                 border-top-right-radius: 20px;
@@ -98,4 +98,4 @@ def to_html(contents, f_name, s_name, n_r_h):
     with open(f'content/{cat}/{goal}/{goal}.html', 'w', encoding='utf8') as result:
         result.write(message)
 
-    print('HTML страница создана\n')
+    print('HTML страница создана')

@@ -14,37 +14,15 @@ def pars(url, goal, cat):
 
             try:
 
-                need_to_db = int(input('\nСоздавать базу данных?(1 - Да, 0 - Нет)\n'))
+                need_to_reverse_html = int(input('\nКак сортировать результаты в HTML?(1 - От большего к меньшему, 0 - От меньшего к большему)\n'))
 
-                need_to_html = int(input('\nСоздавать HTML страницу?(1 - Да, 0 - Нет)\n'))
-
-                if need_to_html in [0, 1] and need_to_db in [0, 1]:
+                if need_to_reverse_html in [0, 1]:
 
                     break
 
             except ValueError:
 
                 print('Введено некорректное значение')
-
-        if need_to_html:
-
-            while True:
-
-                try:
-
-                    need_to_reverse_html = int(input('\nКак сортировать результаты в HTML?(1 - От большего к меньшему, 0 - От меньшего к большему)\n'))
-
-                    if need_to_reverse_html in [0, 1]:
-
-                        break
-
-                    else:
-
-                        print('Введено неверное значение')
-
-                except ValueError:
-
-                    print('Введено некорректное значение')
 
         print('\nВ процессе...\n')
 
@@ -83,41 +61,9 @@ def pars(url, goal, cat):
 
         os.makedirs(f'content/{cat}/{goal}', exist_ok=True)
 
-        if need_to_db:
+        to_database.to_database(cat, goal, about_item)
 
-            to_database.to_database(cat, goal, about_item)
-
-        if need_to_html:
-
-            to_html.to_html(about_item, cat, goal, need_to_reverse_html)
-
-        print('Загружается контент...')
-
-        for item in about_item:
-
-            alt = item[1].replace(" ", "_").replace("/", "").replace(":", "").replace("*", "_").replace("?", "_") + '(' + item[0][30:34] + ')'
-
-            try:
-
-                os.makedirs(f'content/{cat}/{goal}/{alt}')
-
-            except FileExistsError:
-
-                continue
-
-            else:
-
-                if item[4]:
-
-                    photo = requests.get(item[4])
-
-                    with open(f'content/{cat}/{goal}/{alt}/{alt}.jpg', 'wb') as out:
-                        out.write(photo.content)
-
-                with open(f'content/{cat}/{goal}/{alt}/about.txt', 'w', encoding='utf8') as about:
-                    about.write(f'Ссылка на товар : {item[0]}\n\n')
-                    about.write(f'Цена : {item[2]}\n\n')
-                    about.write(f'Локация товара : {item[3]}\n\n')
+        to_html.to_html(about_item, cat, goal, need_to_reverse_html)
 
         print('\nУспешно завершено.')
 

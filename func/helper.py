@@ -57,4 +57,4 @@ def helper():
 
     target = input('\nВведите название интересующего вас устройства: \n').replace(' ', '+')
 
-    pars.pars(f'https://www.kufar.by/l/{link_categories.get(int(category))}/bez-posrednikov?query={target}&sort=lst.d', target, clear_cat)
+    pars.pars(f'https://www.kufar.by/l/{link_categories.get(int(category))}/bez-posrednikov?query={target}&sort=scr.d', target, clear_cat)
