@@ -39,7 +39,7 @@ def pars(url, goal, cat):
             try:
 
                 item = [i.a['href'], i.find('h3', class_="styles_title__F3uIe").text, i.find('p', class_='styles_price__G3lbO').text,
-                        i.find('div', class_='styles_secondary__MzdEb').text, i.img['src']]
+                        i.find('div', class_='styles_secondary__MzdEb').text, i.find('img', class_='styles_image__ZPJzx')['src']]
 
                 about_item.append(item)
 
